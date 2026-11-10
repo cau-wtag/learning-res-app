@@ -3,13 +3,23 @@ name: Backend CI/CD
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - "backend/**"
+      - ".github/workflows/backend-ci.yml"
   pull_request:
     branches: [ "main" ]
+    paths:
+      - "backend/**"
 
 jobs:
   build-and-test:
     name: Lint & Compile Verification
     runs-on: ubuntu-latest
+
+    # Sets the default execution directory for all run steps in this job
+    defaults:
+      run:
+        working-directory: ./backend
 
     steps:
       - name: Check out repository
@@ -21,6 +31,7 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: maven
+          cache-dependency-path: 'backend/pom.xml'
 
       - name: Grant execute permission for Maven wrapper
         run: chmod +x ./mvnw
@@ -61,8 +72,8 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
-          context: .
-          file: ./Dockerfile
+          context: ./backend
+          file: ./backend/Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
