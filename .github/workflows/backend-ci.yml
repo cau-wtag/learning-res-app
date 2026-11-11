@@ -16,7 +16,6 @@ jobs:
     name: Lint & Compile Verification
     runs-on: ubuntu-latest
 
-    # Sets the default execution directory for all run steps in this job
     defaults:
       run:
         working-directory: ./backend
@@ -39,8 +38,16 @@ jobs:
       - name: Run SpotBugs and Checkstyle
         run: ./mvnw compile spotbugs:check checkstyle:check
 
-      - name: Build package (skip test execution until DB service is added)
+      - name: Build package
         run: ./mvnw clean package -DskipTests
+
+      # Save the compiled JAR for the Docker build job
+      - name: Upload built JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-jar
+          path: backend/target/*.jar
+          if-no-files-found: error
 
   docker-build-push:
     name: Build & Push Docker Image
@@ -52,9 +59,12 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      # Sets up hardware emulation for ARM64 on x86 runner
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+      # Download the pre-built JAR into backend/target/
+      - name: Download built JAR
+        uses: actions/download-artifact@v4
+        with:
+          name: backend-jar
+          path: backend/target
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -78,9 +88,6 @@ jobs:
         with:
           context: ./backend
           file: ./backend/Dockerfile
-          platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max     

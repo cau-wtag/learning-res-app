@@ -1,5 +1,5 @@
 # Stage 1: Build stage with Maven and JDK 17
-FROM maven:3.9.6-eclipse-temurin-17-alpine AS builder
+FROM maven:3.9.6-eclipse-temurin-17 AS builder
 WORKDIR /app
 
 # Step 1.1: Copy dependency descriptor and download dependencies offline
