@@ -104,5 +104,9 @@ jobs:
           git pull --rebase origin main
           yq -i '(.releases[] | select(.name == "backend") | .values[0].image.tag) = strenv(NEW_TAG)' helmfile.yaml
           git add helmfile.yaml
-          git commit -m "chore(backend): update image tag to $NEW_TAG [skip ci]"
-          git push origin main
+          if ! git diff --staged --quiet; then
+            git commit -m "chore(backend): update image tag to $NEW_TAG [skip ci]"
+            git push origin main
+          else
+            echo "No tag changes to commit."
+          fi
