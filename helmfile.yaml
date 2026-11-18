@@ -33,7 +33,7 @@ releases:
     namespace: learning-res-dev
     chart: ./charts/frontend
     needs:
-      - learning-res-dev/backend
+      - learning-res-dev/frontend
     values:
       - image:
           tag: sha-7b27a64
