@@ -1,0 +1,20 @@
+appName: frontend
+replicas: 1
+
+image:
+  repository: calebaugustine/learningres-frontend
+  tag: sha-7b27a64
+  pullPolicy: IfNotPresent
+
+service:
+  name: frontend-service
+  type: ClusterIP
+  port: 80
+
+resources:
+  requests:
+    memory: "64Mi"
+    cpu: "50m"
+  limits:
+    memory: "128Mi"
+    cpu: "200m"

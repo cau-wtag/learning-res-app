@@ -1,0 +1,43 @@
+environments:
+  dev: {}
+
+---
+
+releases:
+  - name: backend
+    namespace: learning-res-dev
+    chart: ./charts/backend
+    secrets:
+      - ./secrets.yaml
+    values:
+      - image:
+          tag: sha-cc6e711
+
+  - name: postgres
+    namespace: learning-res-dev
+    chart: oci://registry-1.docker.io/bitnamicharts/postgresql
+    needs:
+      - learning-res-dev/backend
+    values:
+      - fullnameOverride: postgres
+        auth:
+          database: learning_res_db
+          username: learnadmin
+          existingSecret: postgres-secret
+          secretKeys:
+            adminPasswordKey: DB_PASSWORD
+            userPasswordKey: DB_PASSWORD
+            replicationPasswordKey: DB_PASSWORD
+        primary:
+          persistence:
+            enabled: true
+            size: 1Gi
+
+  - name: frontend
+    namespace: learning-res-dev
+    chart: ./charts/frontend
+    needs:
+      - learning-res-dev/backend
+    values:
+      - image:
+          tag: sha-7b27a64

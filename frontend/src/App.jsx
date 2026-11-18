@@ -3,6 +3,7 @@ import './App.css';
 
 const API_BASE = import.meta.env.VITE_API_BASE || '/api';
 
+// const API_BASE = 'http://localhost:8080/api'; // Uncomment for local development
 function App() {
   const [currentUser, setCurrentUser] = useState(() => {
     const saved = localStorage.getItem('user');

@@ -1,0 +1,26 @@
+appName: backend
+replicas: 1
+
+image:
+  repository: calebaugustine/learningres-backend
+  tag: sha-cc6e711
+  pullPolicy: IfNotPresent
+
+service:
+  name: backend-service
+  type: ClusterIP
+  port: 8080
+
+configMap:
+  name: backend-config
+  data:
+    SERVER_PORT: "8080"
+    SPRING_PROFILES_ACTIVE: "prod"
+    SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres:5432/learning_res_db"
+
+secretName: postgres-secret
+secretEnvVars:
+  - envName: SPRING_DATASOURCE_USERNAME
+    secretKey: DB_USER
+  - envName: SPRING_DATASOURCE_PASSWORD
+    secretKey: DB_PASSWORD
