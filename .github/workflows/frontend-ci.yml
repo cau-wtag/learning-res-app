@@ -90,10 +90,10 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git pull --rebase origin main
-          yq -i '(.releases[] | select(.name == "backend") | .values[0].image.tag) = strenv(NEW_TAG)' helmfile.yaml
+          yq -i '(.releases[] | select(.name == "frontend") | .values[0].image.tag) = strenv(NEW_TAG)' helmfile.yaml
           git add helmfile.yaml
           if ! git diff --staged --quiet; then
-            git commit -m "chore(backend): update image tag to $NEW_TAG [skip ci]"
+            git commit -m "chore(frontend): update image tag to $NEW_TAG [skip ci]"
             git push origin main
           else
             echo "No tag changes to commit"
