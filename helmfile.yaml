@@ -1,5 +1,6 @@
 environments:
   dev: {}
+releases: []
 ---
 releases:
   - name: backend
@@ -9,7 +10,7 @@ releases:
       - ./secrets.yaml
     values:
       - image:
-          tag: sha-98493cd
+          tag: sha-092544e
   - name: postgres
     namespace: learning-res-dev
     chart: oci://registry-1.docker.io/bitnamicharts/postgresql
