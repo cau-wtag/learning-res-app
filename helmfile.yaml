@@ -37,4 +37,4 @@ releases:
       - learning-res-dev/frontend
     values:
       - image:
-          tag: sha-7b27a64
+          tag: sha-e78fe09
