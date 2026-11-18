@@ -1,6 +1,5 @@
 environments:
   dev: {}
-
 releases:
   - name: backend
     namespace: learning-res-dev
@@ -9,8 +8,7 @@ releases:
       - ./secrets.yaml
     values:
       - image:
-          tag: sha-f2dd7c3
-
+          tag: sha-98493cd
   - name: postgres
     namespace: learning-res-dev
     chart: oci://registry-1.docker.io/bitnamicharts/postgresql
@@ -30,7 +28,6 @@ releases:
           persistence:
             enabled: true
             size: 1Gi
-
   - name: frontend
     namespace: learning-res-dev
     chart: ./charts/frontend
