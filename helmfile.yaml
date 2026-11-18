@@ -1,6 +1,5 @@
 environments:
   dev: {}
-releases: []
 ---
 releases:
   - name: backend
